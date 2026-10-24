@@ -1,1 +1,69 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: ddl-tables-001
+      author: JuanOliveros2497
+      labels: "HU-PAY-001,ddl,tables"
+      comment: "payment: the Pago aggregate, immutable and already resolved."
+      changes:
+        - sqlFile:
+            path: 001_create_payment.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/001_create_payment.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+  - changeSet:
+      id: ddl-tables-002
+      author: JuanOliveros2497
+      labels: "HU-PAY-001,ddl,tables"
+      comment: "refund: the Reembolso, at most one per Pago (INV-006). No foreign keys here, they go in 04_alter."
+      changes:
+        - sqlFile:
+            path: 002_create_refund.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/002_create_refund.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+  - changeSet:
+      id: ddl-tables-003
+      author: JuanOliveros2497
+      labels: "HU-PAY-001,ddl,tables"
+      comment: "idempotency_key: the key each Pago or Reembolso was created with (INV-004)."
+      changes:
+        - sqlFile:
+            path: 003_create_idempotency_key.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/003_create_idempotency_key.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+  - changeSet:
+      id: ddl-tables-004
+      author: JuanOliveros2497
+      labels: "HU-PAY-001,ddl,tables"
+      comment: "outbox_event: domain events of the Pago, written in the same transaction (ADR-005)."
+      changes:
+        - sqlFile:
+            path: 004_create_outbox_event.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/03_tables/004_create_outbox_event.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
