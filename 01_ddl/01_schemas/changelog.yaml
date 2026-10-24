@@ -1,1 +1,18 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: ddl-schemas-001
+      author: JuanOliveros2497
+      labels: "HU-PAY-001,ddl,schemas"
+      comment: "Create the payment schema. Nothing of this domain lives in public."
+      changes:
+        - sqlFile:
+            path: 001_create_schema_payment.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/01_ddl/01_schemas/001_create_schema_payment.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
