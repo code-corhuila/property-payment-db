@@ -1,0 +1,26 @@
+# Only the migration runner of the payment schema. The PostgreSQL instance is
+# shared by every domain and is defined in property-infra-postgres, which
+# includes this file (Annex J.2, J.7; ADR-008). This repository defines no
+# database service and no volume.
+
+services:
+  payment-db-migrate:
+    image: liquibase/liquibase:4.29
+    profiles: [tooling]             # migrating is a deliberate act: `up` never starts it
+    volumes:
+      - ../:/workspace:ro
+    entrypoint: ["liquibase",
+      "--search-path=/workspace",
+      "--changelog-file=changelog/changelog-master.yaml",
+      "--url=jdbc:postgresql://postgres:5432/${PG_DATABASE:?set PG_DATABASE}",
+      "--username=${PG_ADMIN_USER:?set PG_ADMIN_USER}",
+      "--password=${PG_ADMIN_PASSWORD:?set PG_ADMIN_PASSWORD}",
+      "--database-changelog-table-name=databasechangelog_payment",
+      "--database-changelog-lock-table-name=databasechangeloglock_payment"]
+    command: ["update"]
+    networks: [platform]
+
+networks:
+  platform:
+    name: platform
+    external: true
