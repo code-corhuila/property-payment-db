@@ -1,1 +1,18 @@
-databaseChangeLog: []
+databaseChangeLog:
+  - changeSet:
+      id: dcl-grants-001
+      author: JuanOliveros2497
+      labels: "HU-PAY-001,dcl,grants"
+      comment: "Least privilege on the append-only payment schema; payment_app holds the writer role."
+      changes:
+        - sqlFile:
+            path: 001_grants.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
+      rollback:
+        - sqlFile:
+            path: ../../05_rollbacks/03_dcl/01_grants/001_grants.rollback.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: false
